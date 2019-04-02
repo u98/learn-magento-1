@@ -1,0 +1,13 @@
+<layout version="0.1.0">
+  <default>
+    <reference name="head">
+      <action method="removeItem"><type>skin_js</type><name>js/slideshow.js</name></action>
+    </reference>
+  </default>
+
+  <cms_index_index>
+    <reference name="head">
+      <action method="addItem"><type>skin_css</type><name>css/saleoff.css</name><params/></action>
+    </reference>
+  </cms_index_index>
+</layout>

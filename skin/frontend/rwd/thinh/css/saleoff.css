@@ -1,0 +1,63 @@
+.sale-off-img {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide-controll > ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    bottom: -15px;
+    right: 20px;
+}
+
+.slide-controll > ul > li {
+    position: relative;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: #dddddd;
+    z-index: 11111;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.slide-controll > ul > li.active {
+    background: #3399cc;
+}
+.cycle-overlay {
+    background: rgb(0, 0, 0, .3) !important;
+    opacity: unset !important;
+}
+.cycle-slideshow:hover .cycle-overlay {
+    background: rgb(0, 0, 0, .5) !important;
+}
+.cycle-slideshow:hover .cycle-u-arrow-img {
+    opacity: .7;
+}
+.slideshow-container {
+    height: 415px;
+}
+.cycle-slideshow {
+    height: 400px;
+}
+
+.cycle-prev {
+    left: 0px;
+}
+.cycle-next {
+    right: 0px;
+    transform: rotate(180deg);
+}
+.cycle-u-arrow-img {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 38%;
+    z-index: 1111;
+    background-size: cover;
+    opacity: .3;
+    cursor: pointer;
+}

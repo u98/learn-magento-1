@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <modules>
+        <Uchinka_SaleOff>
+            <version>0.0.1</version>
+        </Uchinka_SaleOff>
+    </modules>
+
+    <global>
+        <blocks>
+            <saleoff>
+                <class>Uchinka_SaleOff_Block</class>
+            </saleoff>
+        </blocks>
+        <models>
+            <saleoff>
+                <class>Uchinka_SaleOff_Model</class>
+            </saleoff>
+        </models>
+    </global>
+
+    <default>
+        <catalogsaleoff>
+            <general>
+                <category_id>1</category_id>
+                <product_count>3</product_count>
+            </general>
+            <slider>
+                <delay>5</delay>
+            </slider>
+        </catalogsaleoff>
+    </default>
+</config>

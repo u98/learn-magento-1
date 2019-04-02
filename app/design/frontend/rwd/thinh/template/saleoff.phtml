@@ -1,0 +1,43 @@
+<div class="sale-off">
+    <div class="cycle-slideshow"
+         data-cycle-fx="<?php echo $products['config']['fx'] ?>"
+         data-cycle-timeout="<?php echo $products['config']['delay'] * 1000; ?>">
+        <div class="cycle-prev cycle-u-arrow-img" style="background-image: url(<?php echo $this->getSkinUrl('images/arrow.png'); ?>);"></div>
+        <div class="cycle-next cycle-u-arrow-img" style="background-image: url(<?php echo $this->getSkinUrl('images/arrow.png'); ?>);"></div>
+        <div class="cycle-overlay"></div>
+        <div class="slide-controll">
+            <ul>
+                <?php $count = count($products['list']); ?>
+                <?php for ($i = 0; $i < $count; $i ++): ?>
+                    <li data-index="<?php echo $i ?>"></li>
+                <?php endfor; ?>
+            </ul>
+        </div>
+        <?php foreach ($products['list'] as $item): ?>
+        <img class="sale-off-img" src="<?php echo $this->helper('catalog/image')->init($item, 'slide_img')->resize(1200, 360); ?>"
+            data-cycle-title="<?php echo $item->getName(); ?>"
+             data-cycle-desc="<?php echo $item->getPrice(); ?>">
+        <?php endforeach; ?>
+    </div>
+</div>
+
+
+<script>
+        $j(document).ready(() => {
+            let dots = $j('.slide-controll > ul > li');
+            dots.first().addClass('active');
+            jQuery('.cycle-slideshow').on('cycle-after', function(e, opts) {
+                dots.eq(opts.nextSlide).addClass('active').siblings().removeClass('active');
+            });
+        });
+        $j('.slide-controll > ul > li').click(function(e) {
+            let ele = e.target;
+            let currentIndex = $j(ele).attr('data-index');
+
+            jQuery('.cycle-slideshow').cycle('goto', currentIndex);
+
+            $j(this).siblings().removeClass('active');
+            $j(ele).addClass('active');
+
+        })
+</script>

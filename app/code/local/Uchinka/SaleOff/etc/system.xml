@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config>
+    <sections>
+        <catalogsaleoff>
+            <label>Sale Off</label>
+            <tab>catalog</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>200</sort_order>
+            <show_in_default>0</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+
+                <!-- This group should appear inside it's own space. -->
+
+                <general>
+                    <label>General Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>0</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <category_id>
+                            <label>Category</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <source_model>saleoff/system_config_source_getCategories</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Which category to get products from]]>.</comment>
+                        </category_id>
+                    </fields>
+                    <fields>
+                        <product_count>
+                            <label>Products count</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[How many products should be shown]]>.</comment>
+                        </product_count>
+                    </fields>
+                </general>
+                <slider>
+                    <label>Slider Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <transition_effect>
+                            <label>Transition Effect</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>saleoff/system_config_source_transitionEffect</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </transition_effect>
+                    </fields>
+                    <fields>
+                        <delay>
+                            <label>Delay Time</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Seconds between slides]]>.</comment>
+                        </delay>
+                    </fields>
+                </slider>
+            </groups>
+        </catalogsaleoff>
+    </sections>
+</config>

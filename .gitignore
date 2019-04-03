@@ -1,5 +1,5 @@
 media
 .idea
 lib/*
-var/cache
+var/*
 

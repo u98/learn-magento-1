@@ -17,6 +17,14 @@
                 <class>Uchinka_SaleOff_Model</class>
             </saleoff>
         </models>
+        <resources>
+            <saleoff_setup>
+                <setup>
+                    <module>Uchinka_SaleOff</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+            </saleoff_setup>
+        </resources>
     </global>
 
     <default>

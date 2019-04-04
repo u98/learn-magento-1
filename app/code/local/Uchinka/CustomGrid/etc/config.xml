@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config>
+    <modules>
+        <Uchinka_CustomGrid>
+            <version>0.0.1</version>
+        </Uchinka_CustomGrid>
+    </modules>
+    <global>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product>Uchinka_CustomGrid_Block_Adminhtml_Product</catalog_product>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+    </global>
+</config>

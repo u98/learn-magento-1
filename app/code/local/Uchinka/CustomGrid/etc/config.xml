@@ -14,5 +14,27 @@
                 </rewrite>
             </adminhtml>
         </blocks>
+        <models>
+            <customgrid>
+                <class>Uchinka_CustomGrid_Model</class>
+                <resourceModel>customgrid_resource</resourceModel>
+            </customgrid>
+            <customgrid_resource>
+                <class>Uchinka_CustomGrid_Model_Resource</class>
+                <entities>
+                    <grid>
+                        <table>uchinka_customgrid_grid</table>
+                    </grid>
+                </entities>
+            </customgrid_resource>
+        </models>
+        <resources>
+            <customgrid_setup>
+                <setup>
+                    <module>Uchinka_CustomGrid</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </customgrid_setup>
+        </resources>
     </global>
 </config>

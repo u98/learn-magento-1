@@ -11,6 +11,7 @@
             <adminhtml>
                 <rewrite>
                     <catalog_product>Uchinka_CustomGrid_Block_Adminhtml_Product</catalog_product>
+                    <catalog_product_grid>Uchinka_CustomGrid_Block_Adminhtml_Product_Grid</catalog_product_grid>
                 </rewrite>
             </adminhtml>
         </blocks>
@@ -37,4 +38,13 @@
             </customgrid_setup>
         </resources>
     </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <custom>
+                    <file>uchinka/custom.xml</file>
+                </custom>
+            </updates>
+        </layout>
+    </adminhtml>
 </config>

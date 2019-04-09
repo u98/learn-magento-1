@@ -14,6 +14,9 @@
                     <catalog_product_grid>Uchinka_CustomGrid_Block_Adminhtml_Product_Grid</catalog_product_grid>
                 </rewrite>
             </adminhtml>
+            <customgrid>
+                <class>Uchinka_CustomGrid_Block</class>
+            </customgrid>
         </blocks>
         <models>
             <customgrid>
@@ -47,4 +50,15 @@
             </updates>
         </layout>
     </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Uchinka_CustomGrid before="Mage_Adminhtml">Uchinka_CustomGrid_Adminhtml</Uchinka_CustomGrid>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 </config>

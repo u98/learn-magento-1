@@ -5,4 +5,13 @@
             <block type="adminhtml/template" template="uchinka/custom_grid/js.phtml"></block>
         </reference>
     </default>
+    <adminhtml_customgrid_index_index>
+        <reference name="head">
+            <action method="addCss"><name>uchinka/custom.css</name></action>
+            <action method="addJs"><script>uchinka/custom.js</script></action>
+        </reference>
+        <reference name="content">
+            <block type="customgrid/adminhtml_grid" name="customgrid"></block>
+        </reference>
+    </adminhtml_customgrid_index_index>
 </layout>

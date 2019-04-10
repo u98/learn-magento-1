@@ -24,11 +24,13 @@ class Uchinka_CustomGrid_Block_Adminhtml_Customgrid_Grid extends Mage_Adminhtml_
     {
         /** @var Uchinka_CustomGrid_Model_Resource_Grid_Collection $collection */
         $collection = Mage::getResourceModel('customgrid/grid_collection');
-        $collection
-            ->joinAttributeData()
+        $collection->joinAttributeData()
             ->addFieldToFilter('user_id', $this->_getUserId());
 
         $this->setCollection($collection);
+
+        $attributeIds = $collection->getColumnValues('attribute_id');
+        $this->setData('current_attribute_ids', $attributeIds);
 
         return parent::_prepareCollection();
     }

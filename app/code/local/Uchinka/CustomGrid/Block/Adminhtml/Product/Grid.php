@@ -60,6 +60,8 @@ class Uchinka_CustomGrid_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Blo
         }
         return $this;
     }
+
+
     public function getCustomColumns() {
         $gridModel = Mage::getModel('customgrid/grid')->getCollection()->addFieldToFilter('user_id', $this->currentUserId)
             ->getData();

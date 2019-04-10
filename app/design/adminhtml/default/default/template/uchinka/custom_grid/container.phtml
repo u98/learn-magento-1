@@ -1,0 +1,52 @@
+<?php
+?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="<?php echo $this->getHeaderWidth() ?>"><?php echo $this->getHeaderHtml() ?></td>
+            <td class="form-buttons"><?php echo $this->getButtonsHtml() ?></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <div class="u-form-add-new-column">
+        <form action="<?php echo $this->getUrl('adminhtml/customgrid_index/new') ?>" id="u-add-column-form">
+            <table class="form-list">
+                <tr>
+                    <td>
+                        <label for="u-select-attribute-code">Select column (*)</label>
+                        <br>
+                        <select id="u-select-attribute-code" name="attribute_id" required>
+                            <?php $attributes =  $this->getAllAttribute(); ?>
+                            <?php foreach($attributes as $attribute): ?>
+                                <?php if(!empty($attribute->getFrontendLabel())): ?>
+                                    <option value="<?php echo $attribute->getAttributeId(); ?>"><?php echo $attribute->getFrontendLabel(); ?></option>
+                                <?php else: ?>
+                                    <option value="<?php echo $attribute->getAttributeId() ?>"><?php echo $attribute->getAttributeCode(); ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td>
+                        <label for="u-input-attribute-label">Custom label</label>
+                        <br>
+                        <input type="text" name="label">
+                    </td>
+                    <td>
+                        <label for="u-input-attribute-label">Width</label>
+                        <br>
+                        <input type="number" name="width" value="50"> (px)
+                    </td>
+                    <td>
+                        <br>
+                        <button type="submit" class="scalable add" style=""><span><span><span>Add new</span></span></span></button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <?php echo $this->getGridHtml() ?>
+</div>
+<script>
+    var currentAttributeIds = [<?php echo implode(',', $this->getChild('grid')->getCurrentAttributeIds()) ?>];
+</script>

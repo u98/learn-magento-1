@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <layout>
-    <default>
-        <reference name="js">
-            <block type="adminhtml/template" template="uchinka/custom_grid/js.phtml"></block>
-        </reference>
-    </default>
     <adminhtml_customgrid_index_index>
+        <remove name="header"/>
+        <remove name="menu"/>
+        <reference name="root">
+            <action method="setTemplate"><template>empty.phtml</template></action>
+        </reference>
+
         <reference name="head">
             <action method="addCss"><name>uchinka/custom.css</name></action>
             <action method="addJs"><script>uchinka/custom.js</script></action>
         </reference>
+
+        <reference name="before_body_end">
+            <block type="adminhtml/template" template="uchinka/custom_grid/js.phtml"></block>
+        </reference>
+
         <reference name="content">
             <block type="customgrid/adminhtml_grid" name="customgrid"></block>
         </reference>
+
+
     </adminhtml_customgrid_index_index>
 </layout>

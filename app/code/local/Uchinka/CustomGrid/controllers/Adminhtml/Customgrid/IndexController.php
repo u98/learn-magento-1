@@ -10,7 +10,7 @@ class Uchinka_CustomGrid_Adminhtml_Customgrid_IndexController extends Mage_Admin
     public function indexAction()
     {
         $this->loadLayout();
-        $this->_setActiveMenu('uchinka');
+        //$this->_setActiveMenu('uchinka');
         $this->_title($this->__("Uchinka Custom Grid"));
         $this->renderLayout();
     }

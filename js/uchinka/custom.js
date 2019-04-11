@@ -1,16 +1,10 @@
-jQuery(function($) {
-    $('.custom-grid-btn.btn-delete').click(function(e) {
-        confirm('Do you want to delete row id '+ $(e.target).attr('data-id'))
-    })
-
-    $('#u-add-column-form').submit(function(e) {
-        e.preventDefault();
-        var form = $(e.target);
-
-    })
-})
-
-
-var showCreateColumn = function () {
-    jQuery('.u-form-add-new-column').toggle();
+let showColumnsPopup = function (url) {
+    jQuery('.u-popup-content').html(`<iframe src="${url}"></iframe>`)
+    jQuery('.u-popup-overlay').show();
 }
+
+jQuery(function($) {
+   $('.u-popup-overlay').click(function (e) {
+       $(this).hide();
+   })
+});

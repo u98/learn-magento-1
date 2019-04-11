@@ -37,7 +37,19 @@ $table = $adapter->newTable($table_name)
     ->addColumn('label', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
         'nullable' => true,
         'default'   => ''
-    ));
+    ))
+    ->addForeignKey($installer->getFkName(
+        'customgrid/grid',
+        'user_id',
+        'admin/user',
+        'user_id'
+    ), 'user_id', 'admin_user', 'user_id', 'CASCADE')
+    ->addForeignKey($installer->getFkName(
+        'customgrid/grid',
+        'attribute_id',
+        'eav/attribute',
+        'attribute_id'
+    ), 'attribute_id', 'eav_attribute', 'attribute_id', 'CASCADE');
 
 $adapter->createTable($table);
 

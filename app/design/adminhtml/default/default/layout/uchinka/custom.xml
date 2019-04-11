@@ -3,12 +3,15 @@
     <adminhtml_customgrid_index_index>
         <remove name="header"/>
         <remove name="menu"/>
+        <remove name="mgt_developertoolbar"/>
         <reference name="root">
             <action method="setTemplate"><template>empty.phtml</template></action>
         </reference>
 
         <reference name="head">
             <action method="addCss"><name>uchinka/custom.css</name></action>
+            <action method="addCss"><name>uchinka/jquery-ui.min.css</name></action>
+            <action method="addJs"><script>uchinka/jquery-ui.min.js</script></action>
             <action method="addJs"><script>uchinka/custom.js</script></action>
         </reference>
 
@@ -19,7 +22,16 @@
         <reference name="content">
             <block type="customgrid/adminhtml_grid" name="customgrid"></block>
         </reference>
-
-
     </adminhtml_customgrid_index_index>
+
+    <adminhtml_catalog_product_index>
+        <reference name="head">
+            <action method="addCss"><name>uchinka/custom.css</name></action>
+            <action method="addJs"><script>uchinka/custom.js</script></action>
+        </reference>
+
+        <reference name="content">
+            <block type="adminhtml/template" template="uchinka/custom_grid/popup.phtml"></block>
+        </reference>
+    </adminhtml_catalog_product_index>
 </layout>

@@ -9,9 +9,33 @@ class Uchinka_CustomGrid_Adminhtml_Customgrid_IndexController extends Mage_Admin
 
     public function indexAction()
     {
+        Mage::getSingleton('core/session')->addError('Something not true, please try again later');
         $this->loadLayout();
         //$this->_setActiveMenu('uchinka');
         $this->_title($this->__("Uchinka Custom Grid"));
+
         $this->renderLayout();
+    }
+
+    protected function _getUserId()
+    {
+        return Mage::getSingleton('admin/session')->getUser()->getId();
+    }
+
+    public function newAction() {
+        if ($this->getRequest()->isAjax())
+        {
+            $params = (array) $this->getRequest()->getParams();
+            $row = Mage::getModel('customgrid/grid');
+            $row->setUserId($this->_getUserId());
+            $row->setAttributeId($params['attribute_id']);
+            $row->setSortOrder(0);
+            $row->setWidth($params['width']);
+            $row->setEditable(0);
+            $row->setLabel($params['label']);
+            $row->save();
+        }
+//        var_dump($params);
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($row->getId()));
     }
 }

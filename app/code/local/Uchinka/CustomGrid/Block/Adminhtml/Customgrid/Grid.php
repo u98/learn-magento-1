@@ -14,7 +14,7 @@ class Uchinka_CustomGrid_Block_Adminhtml_Customgrid_Grid extends Mage_Adminhtml_
         $this->setDefaultDir('asc');
         $this->setSortable(false);
         $this->setDefaultLimit(20);
-        $this->setSaveParametersInSession(true);
+//        $this->setSaveParametersInSession(true);
     }
 
 
@@ -28,9 +28,6 @@ class Uchinka_CustomGrid_Block_Adminhtml_Customgrid_Grid extends Mage_Adminhtml_
             ->addFieldToFilter('user_id', $this->_getUserId());
 
         $this->setCollection($collection);
-
-        $attributeIds = $collection->getColumnValues('attribute_id');
-        $this->setData('current_attribute_ids', $attributeIds);
 
         return parent::_prepareCollection();
     }
@@ -55,8 +52,8 @@ class Uchinka_CustomGrid_Block_Adminhtml_Customgrid_Grid extends Mage_Adminhtml_
 
         $this->addColumn('label',
             array(
-                'header'=> 'Label',
-                'getter'    => 'getCustomLabel',
+                'header'     => 'Label',
+                'renderer'   => 'customgrid/adminhtml_widget_grid_column_renderer_label',
             )
         );
 
@@ -71,8 +68,7 @@ class Uchinka_CustomGrid_Block_Adminhtml_Customgrid_Grid extends Mage_Adminhtml_
         $this->addColumn('width',
             array(
                 'header'=> 'Width',
-                'getter' => 'getFormattedWidth',
-                'column_css_class' => 'color-red'
+                'renderer'   => 'customgrid/adminhtml_widget_grid_column_renderer_width',
             )
         );
 

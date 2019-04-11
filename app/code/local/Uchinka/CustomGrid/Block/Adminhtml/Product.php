@@ -8,7 +8,7 @@ class Uchinka_CustomGrid_Block_Adminhtml_Product extends Mage_Adminhtml_Block_Ca
 
         $this->_addButton('columns', array(
             'label'   => 'Columns',
-            'onclick' => 'showColumnsPopup()',
+            'onclick' => 'showColumnsPopup(\''. $this->getUrl('adminhtml/customgrid_index/index') .'\')',
             'title'   => 'Manage Columns'
         ), -1);
 

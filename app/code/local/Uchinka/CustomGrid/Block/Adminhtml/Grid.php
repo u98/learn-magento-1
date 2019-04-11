@@ -23,10 +23,11 @@ class Uchinka_CustomGrid_Block_Adminhtml_Grid extends Mage_Adminhtml_Block_Widge
         parent::_prepareLayout();
 
         $this->_addButton('save', array(
-            'label'   => 'Save',
-            'onclick' => 'saveGrid()',
+            'label'   => 'Save sort order',
+            'onclick' => 'saveSortOrderGrid()',
             'title'   => 'Save Grid',
-            'class'   => 'save'
+            'class'   => 'save',
+            'id'      => 'u-btn-save-order'
         ), 1);
 
         return $this;
@@ -41,7 +42,7 @@ class Uchinka_CustomGrid_Block_Adminhtml_Grid extends Mage_Adminhtml_Block_Widge
     {
         $result = Mage::getResourceModel('eav/entity_attribute_collection')
             ->addFieldToFilter('entity_type_id', 4)
-            ->addFieldToSelect(array('attribute_id', 'attribute_code', 'frontend_input', 'frontend_label'));
+            ->addFieldToSelect(array('attribute_id', 'attribute_code', 'frontend_input', 'frontend_label'))->getData();
 
 
         return $result;

@@ -33,9 +33,17 @@ class Uchinka_CustomGrid_Adminhtml_Customgrid_IndexController extends Mage_Admin
             $row->setWidth($params['width']);
             $row->setEditable(0);
             $row->setLabel($params['label']);
-            $row->save();
+            try {
+                $row->save();
+            } catch (Exception $exception) {
+                return $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
+                    'status'    => 'error',
+                    'message'   => 'Error! The attribute has existed in your columns, please try again!'
+                )));
+            }
+
         }
-        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($row->getId()));
+        return $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($row));
     }
 
     public function deleteAction()

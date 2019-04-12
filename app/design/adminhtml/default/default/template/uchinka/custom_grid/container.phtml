@@ -47,7 +47,7 @@
     <?php echo $this->getGridHtml() ?>
 </div>
 <script>
-    let currentAttributeIds = [<?php echo implode(',', $this->getChild('grid')->getCurrentAttributeIds()) ?>];
+    let currentAttributeIds = <?php echo json_encode($this->getChild('grid')->getCurrentAttributeIds()) ?>;
 
     let listAttribute = <?php echo json_encode($this->getAllAttribute()) ?>
 </script>

@@ -9,5 +9,7 @@ jQuery(function($) {
 
 
 addEventListener("message", function (message) {
-    console.log(message.data);
+   if (message.data === 'close_popup') {
+       jQuery('.u-popup-overlay').hide();
+   }
 }, false);

@@ -17,7 +17,13 @@ class Uchinka_CustomGrid_Block_Adminhtml_Customgrid_Grid extends Mage_Adminhtml_
 //        $this->setSaveParametersInSession(true);
     }
 
-
+    protected function _afterLoadCollection() {
+        $attributeIds = [];
+        foreach ($this->_collection->getItems() as $item) {
+            $attributeIds[] = $item->getData();
+        }
+        $this->setData('current_attribute_ids', $attributeIds);
+    }
 
 
     protected function _prepareCollection()
@@ -28,7 +34,6 @@ class Uchinka_CustomGrid_Block_Adminhtml_Customgrid_Grid extends Mage_Adminhtml_
             ->addFieldToFilter('user_id', $this->_getUserId());
 
         $this->setCollection($collection);
-
         return parent::_prepareCollection();
     }
 
@@ -61,7 +66,7 @@ class Uchinka_CustomGrid_Block_Adminhtml_Customgrid_Grid extends Mage_Adminhtml_
             array(
                 'header'=> 'Sort order',
                 'index' => 'sort_order',
-                'type'  => 'number'
+                'type'  => 'number',
             )
         );
 

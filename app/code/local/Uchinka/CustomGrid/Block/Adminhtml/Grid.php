@@ -27,7 +27,8 @@ class Uchinka_CustomGrid_Block_Adminhtml_Grid extends Mage_Adminhtml_Block_Widge
             'onclick' => 'saveSortOrderGrid()',
             'title'   => 'Save',
             'class'   => 'save',
-            'disabled' => true
+            'disabled' => true,
+            'id'      => 'u-btn-save-column'
         ), 1);
         $this->_addButton('close', array(
             'label'   => 'Close',

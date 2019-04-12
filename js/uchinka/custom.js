@@ -4,7 +4,10 @@ let showColumnsPopup = function (url) {
 }
 
 jQuery(function($) {
-   $('.u-popup-overlay').click(function (e) {
-       $(this).hide();
-   })
+
 });
+
+
+addEventListener("message", function (message) {
+    console.log(message.data);
+}, false);

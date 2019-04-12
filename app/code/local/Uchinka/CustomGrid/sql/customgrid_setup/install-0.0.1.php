@@ -18,12 +18,10 @@ $table = $adapter->newTable($table_name)
     ->addColumn('user_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
         'unsigned' => true,
         'nullable' => false,
-        'primary' => true,
     ))
     ->addColumn('attribute_id', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
         'unsigned' => true,
         'nullable' => false,
-        'primary' => true,
     ))
     ->addColumn('sort_order', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
         'default' => 0,
@@ -49,7 +47,13 @@ $table = $adapter->newTable($table_name)
         'attribute_id',
         'eav/attribute',
         'attribute_id'
-    ), 'attribute_id', 'eav_attribute', 'attribute_id', 'CASCADE');
+    ), 'attribute_id', 'eav_attribute', 'attribute_id', 'CASCADE')
+    ->addIndex(
+        $installer->getIdxName(
+            'customgrid/grid',
+            array('user_id', 'attribute_id'),
+            Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE
+        ), array('user_id', 'attribute_id'), array('type' => Varien_Db_Adapter_Interface::INDEX_TYPE_UNIQUE));
 
 $adapter->createTable($table);
 

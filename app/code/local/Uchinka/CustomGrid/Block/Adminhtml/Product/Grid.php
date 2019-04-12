@@ -47,10 +47,10 @@ class Uchinka_CustomGrid_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Blo
     protected function _prepareColumns()
     {
         if ($columns = $this->getCustomColumns()) {
-            $this->addColumn('name',
+            $this->addColumn('entity_id',
                 array(
-                    'header'=> Mage::helper('catalog')->__('Name'),
-                    'index' => 'name',
+                    'header'=> 'ID',
+                    'index' => 'entity_id',
                 ));
             if (Mage::helper('catalog')->isModuleEnabled('Mage_Rss')) {
                 $this->addRssList('rss/catalog/notifystock', Mage::helper('catalog')->__('Notify Low Stock RSS'));

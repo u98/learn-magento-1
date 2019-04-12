@@ -1,6 +1,8 @@
 <script>
     let url = '<?php echo $this->getUrl('adminhtml/catalog_product'); ?>';
 
+    let isUpdated = false;
+
     jQuery(function($) {
         $('.custom-grid-btn.btn-delete').click(function(e) {
             if (confirm('Do you want to delete row id '+ $(e.target).attr('data-id'))) {
@@ -20,7 +22,12 @@
         $('#u-add-column-form').submit(function(e) {
             e.preventDefault();
             let form = $(e.target);
-            $.post(form.attr('action'), form.serialize());
+            toggleImgLoading();
+            $.post(form.attr('action'), form.serialize()).done(function (e) {
+                console.log(e);
+            }).always(function () {
+                toggleImgLoading(false);
+            });
         })
 
         $('#u-btn-cancel').click(function() {
@@ -68,5 +75,9 @@
     }
 
 
+
+    let closePopup = function () {
+        parent.postMessage('Hello', '*')
+    }
 
 </script>

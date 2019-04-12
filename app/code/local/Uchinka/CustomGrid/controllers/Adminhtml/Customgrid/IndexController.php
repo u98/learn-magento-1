@@ -35,7 +35,11 @@ class Uchinka_CustomGrid_Adminhtml_Customgrid_IndexController extends Mage_Admin
             $row->setLabel($params['label']);
             $row->save();
         }
-//        var_dump($params);
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($row->getId()));
+    }
+
+    public function deleteAction()
+    {
+        var_dump($this->getRequest()->getParams());
     }
 }

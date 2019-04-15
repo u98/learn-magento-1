@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config>
+    <modules>
+        <Uchinka_CustomGrid>
+            <version>0.0.2</version>
+        </Uchinka_CustomGrid>
+    </modules>
+    <global>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product>Uchinka_CustomGrid_Block_Adminhtml_Product</catalog_product>
+                    <catalog_product_grid>Uchinka_CustomGrid_Block_Adminhtml_Product_Grid</catalog_product_grid>
+                </rewrite>
+            </adminhtml>
+            <customgrid>
+                <class>Uchinka_CustomGrid_Block</class>
+            </customgrid>
+        </blocks>
+        <models>
+            <customgrid>
+                <class>Uchinka_CustomGrid_Model</class>
+                <resourceModel>customgrid_resource</resourceModel>
+            </customgrid>
+            <customgrid_resource>
+                <class>Uchinka_CustomGrid_Model_Resource</class>
+                <entities>
+                    <grid>
+                        <table>uchinka_customgrid_grid</table>
+                    </grid>
+                </entities>
+            </customgrid_resource>
+        </models>
+        <resources>
+            <customgrid_setup>
+                <setup>
+                    <module>Uchinka_CustomGrid</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </customgrid_setup>
+        </resources>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <custom>
+                    <file>uchinka/custom.xml</file>
+                </custom>
+            </updates>
+        </layout>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Uchinka_CustomGrid before="Mage_Adminhtml">Uchinka_CustomGrid_Adminhtml</Uchinka_CustomGrid>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>

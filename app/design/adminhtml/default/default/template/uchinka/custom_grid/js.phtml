@@ -1,0 +1,269 @@
+<script>
+    let url = '<?php echo $this->getUrl('adminhtml/catalog_product'); ?>';
+
+    let isUpdated = false;
+
+    let lastIndex = null;
+    let currentMax = null;
+
+    let attrDeleted = [];
+
+    let isUpdating = null;
+
+    let reOrderParent = false;
+
+    jQuery(function ($) {
+        $('#u-add-column-form').submit(function (e) {
+            e.preventDefault();
+            let form = $(e.target).serializeArray();
+            if (isUpdating === null) {
+                let attributeId = +form[0].value;
+                let attributeLabel = form[1].value;
+                let attributeWidth = +form[2].value;
+                let isExisted = currentAttributes.find(function (e) {
+                    return +e.attribute_id === attributeId
+                })
+                if (isExisted !== undefined) {
+                    return false;
+                }
+                let selectedAttr = listAttribute.find(function (e) {
+                    return +e.attribute_id === attributeId
+                });
+                attributeLabel = attributeLabel === '' ? null : attributeLabel;
+                let newColumn = {
+                    attribute_id: attributeId,
+                    column_id: null,
+                    label: attributeLabel,
+                    sort_order: (++currentMax).toString(),
+                    status: '1',
+                    width: attributeWidth,
+                    attribute_code: selectedAttr.attribute_code,
+                    is_add_new: true,
+                    frontend_label: selectedAttr.frontend_label,
+                };
+                currentAttributes.push(newColumn);
+                reLoadSelectAttributeCode();
+            } else {
+                currentAttributes.map(e => {
+                    if (e.attribute_code === isUpdating.attribute_code) {
+                        let attributeLabel = form[0].value === '' ? null : form[0].value;
+                        let attributeWidth = +form[1].value;
+                            e.label = attributeLabel;
+                        e.width = attributeWidth;
+                        e.is_updated = true;
+                    }
+                    return e;
+                })
+            }
+            activeSaveBtn();
+            customgrid_gridJsObject.renderWithJSON();
+        });
+
+        $('#u-btn-cancel').click(function () {
+            jQuery('.u-form-add-new-column').hide();
+            jQuery('#u-btn-add-column').show();
+        });
+        $('#customgrid_grid_table > tbody').sortable({
+            axis: 'y',
+            cursor: 'move',
+            update: function (e, ui) {
+                activeSaveBtn();
+                swap($('#customgrid_grid_table > tbody tr').index(ui.item[0]))
+            },
+            start: function (e, ui) {
+                lastIndex = $('#customgrid_grid_table > tbody tr').index(ui.item[0])
+            }
+        });
+
+
+    });
+
+    let swap = function (index) {
+        ++index; ++lastIndex;
+        currentAttributes[lastIndex - 1].sort_order = index.toString();
+        currentAttributes[index - 1].sort_order = lastIndex.toString();
+        customgrid_gridJsObject.renderWithJSON();
+    };
+
+
+
+    let reLoadSelectAttributeCode = function () {
+        let select = jQuery('#u-select-attribute-code');
+        select.html('');
+        jQuery('#u-input-attribute-label').val('');
+        jQuery('#u-input-attribute-width').val('50');
+        let options = '';
+        filterAttribute(listAttribute, currentAttributes).forEach(e => {
+            options += `<option value="${e.attribute_id}">${e.attribute_code}</option>`
+        });
+        select.html(options).prop('disabled', false);
+    };
+
+    let filterAttribute = function (attr, curr) {
+        return attr.filter(e => {
+            return !curr.some(function (ee) {
+                return +ee.attribute_id === +e.attribute_id;
+            })
+        })
+    }
+
+    let showCreateColumn = function () {
+        jQuery('.u-form-add-new-column').show();
+        jQuery('#u-btn-add-column').hide();
+        jQuery('#btn-btn-add-btn-edit span').text('Add new');
+        reLoadSelectAttributeCode();
+        isUpdating = null;
+    }
+
+    let toggleImgLoading = function (value = true) {
+        if (value) {
+            jQuery('.u-overlay-loading').show();
+        } else {
+            jQuery('.u-overlay-loading').hide();
+        }
+    }
+
+    let activeSaveBtn = function (status = true) {
+        if (!isUpdated && status) {
+            jQuery('#u-btn-save-column').removeClass('disabled');
+            isUpdated = true
+        }
+        if (!status) {
+            jQuery('#u-btn-save-column').addClass('disabled');
+            isUpdated = false
+        }
+    };
+
+    activeSaveBtn(false);
+
+
+    let closePopup = function () {
+        if (isUpdated) {
+            if (confirm('Your setting is not saved, do you want close popup?')) {
+                parent.postMessage('close_popup', '*')
+            }
+        } else {
+            parent.postMessage('close_popup', '*')
+        }
+        if (reOrderParent)
+            parent.postMessage('re_order', '*')
+    }
+    let btnDeleteRow = function (code) {
+        if (confirm('Do you want to delete row ' + code)) {
+            let id = null;
+            currentAttributes = currentAttributes.filter(function (e) {
+                if (e.attribute_code === code && !('is_add_new' in e)) {
+                    id = +e.column_id;
+                }
+                return e.attribute_code !== code
+            });
+            if (id !== null)
+                attrDeleted.push(id);
+            reOrderJSON();
+            customgrid_gridJsObject.renderWithJSON();
+            activeSaveBtn();
+        }
+    };
+
+    let btnEditRow = function (code) {
+        let existed = currentAttributes.find(function (e) {
+            return e.attribute_code === code;
+        });
+        if (existed) {
+            if (existed.label !== null) {
+                jQuery('#u-input-attribute-label').val(existed.label);
+            } else {
+                jQuery('#u-input-attribute-label').val('');
+            }
+            jQuery('#u-input-attribute-width').val(existed.width);
+            jQuery('#btn-btn-add-btn-edit span').text('Update');
+            jQuery('.u-form-add-new-column').show();
+            jQuery('#u-btn-add-column').hide();
+            isUpdating = existed;
+            let option = `<option>${code}</option>`;
+            jQuery('#u-select-attribute-code').prop('disabled', true).html(option);
+        }
+    };
+
+    let reOrderJSON = function () {
+        currentAttributes = currentAttributes.map(function (e, i) {
+            e.sort_order = (i + 1).toString();
+            return e;
+        })
+    }
+
+    if ('customgrid_gridJsObject' in window) {
+        customgrid_gridJsObject.renderWithJSON = function (data = null) {
+
+            let table = jQuery('#customgrid_grid_table > tbody');
+            table.html('');
+            currentAttributes.sort(function(a, b) {
+                return +a.sort_order - +b.sort_order
+            }).forEach(function (e, i) {
+                let label = e.label === null ? e.frontend_label : e.label + '(*)';
+                let className = i % 2 === 0 ? 'even ui-sortable-handle' : 'ui-sortable-handle';
+                let html = `<tr title="" class="${className}">
+                            <td class="a-right">${e.column_id}</td>
+                            <td class="">
+                                ${e.attribute_code} </td>
+                            <td class="">
+                                <span class="u-show-first-group"> ${label === null ? e.attribute_code + '(**)' : label}</span>
+                                <input type="text" class="u-hidden-first-group" value="${label}"> </td>
+                            <td class="a-right">
+                                ${e.sort_order} </td>
+                            <td class="a-right">
+                                <span class="u-show-first-group">${e.width}px</span>
+                                <input type="text" class="u-hidden-first-group" value="50"> </td>
+                            <td class="a-center">
+                                <input type="checkbox" class="checkbox" ${e.status === '1' ? 'checked' : ''} onchange="toggleCheckboxStatus('${e.attribute_code}', this)"> </td>
+                            <td class="last a-right">
+                                <span class="custom-grid-btn btn-edit" onclick="btnEditRow('${e.attribute_code}')" data-id="14" style="background-image: url(http://magento1.local/skin/adminhtml/default/default/images/icon_edit_address.gif);"></span><span class="custom-grid-btn btn-delete" onclick="btnDeleteRow('${e.attribute_code}')" style="background-image: url(http://magento1.local/skin/adminhtml/default/default/images/icon_btn_delete.gif);"></span> </td>
+                        </tr>`;
+                table.append(html);
+                currentMax = +e.sort_order;
+            })
+        }
+        customgrid_gridJsObject.renderWithJSON();
+    }
+
+    let saveColumns = function (formKey, url) {
+        toggleImgLoading()
+        jQuery.post(url, {
+            form_key: formKey,
+            data: JSON.stringify(currentAttributes),
+            deleted: attrDeleted
+        }).done(function (e) {
+            e = JSON.parse(e);
+            if (e.status === 'success') {
+                alert(e.message)
+                activeSaveBtn(false);
+                reOrderParent = true;
+            }
+        }).fail(function (err) {
+            e = JSON.parse(e);
+            if (err.status === 'error') {
+                alert(e.message);
+            }
+        }).always(function () {
+            toggleImgLoading(false)
+        })
+    }
+
+    let toggleCheckboxStatus = function (code, event) {
+        activeSaveBtn();
+        let status = '0';
+        if (jQuery(event).prop('checked')) {
+            status = '1';
+        }
+
+        currentAttributes = currentAttributes.map(function (e) {
+            if (e.attribute_code === code) {
+                e.status = status;
+                e.is_updated = true;
+            }
+            return e;
+        });
+        customgrid_gridJsObject.renderWithJSON();
+    }
+
+</script>

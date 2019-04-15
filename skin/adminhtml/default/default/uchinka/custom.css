@@ -1,0 +1,66 @@
+.custom-grid-btn {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.u-form-add-new-column {
+    display: none;
+    margin: 10px 5px;
+}
+.u-overlay-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, .8);
+    display: none;
+}
+
+.u-overlay-loading > .u-loading-gif {
+    width: 100px;
+    height: 100px;
+    background-size: cover !important;
+    margin: auto;
+    top: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+.u-popup-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, .8);
+    z-index: 1111;
+    display: none;
+}
+
+
+.u-popup-content > iframe {
+    position: absolute;
+    width: 1024px;
+    height: 500px;
+    top: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    overflow: auto;
+    border: 1px solid;
+}
+.u-hidden-first-group {
+    display: none;
+}
+#u-btn-save-order {
+    display: none;
+}
+
+.p-right {
+    padding-right: 15px !important;
+}

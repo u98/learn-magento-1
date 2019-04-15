@@ -24,10 +24,9 @@ class Uchinka_CustomGrid_Block_Adminhtml_Grid extends Mage_Adminhtml_Block_Widge
 
         $this->_addButton('save', array(
             'label'   => 'Save',
-            'onclick' => 'saveSortOrderGrid()',
+            'onclick' => 'saveColumns(\'' . Mage::getSingleton('core/session')->getFormKey() . '\', \'' . $this->getUrl('adminhtml/customgrid_index/save') . '\')',
             'title'   => 'Save',
             'class'   => 'save',
-            'disabled' => true,
             'id'      => 'u-btn-save-column'
         ), 1);
         $this->_addButton('close', array(
@@ -52,8 +51,18 @@ class Uchinka_CustomGrid_Block_Adminhtml_Grid extends Mage_Adminhtml_Block_Widge
             ->addFieldToSelect(array('attribute_id', 'attribute_code', 'frontend_input', 'frontend_label'))->getData();
 
         return $result;
+    }
 
+    protected function getCurrentAttributes()
+    {
+        $attributes = [];
+        $collection = Mage::getResourceModel('customgrid/grid_collection')->joinAttributeData()
+            ->addFieldToFilter('user_id', $this->_getUserId());
 
+        foreach($collection->getItems() as $item) {
+            $attributes[] = $item->getData();
+        }
+        return $attributes;
     }
 
 }

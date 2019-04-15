@@ -12,4 +12,7 @@ addEventListener("message", function (message) {
    if (message.data === 'close_popup') {
        jQuery('.u-popup-overlay').hide();
    }
+   if (message.data === 're_order') {
+       productGridJsObject.reload();
+   }
 }, false);

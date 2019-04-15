@@ -3,68 +3,60 @@
 
     let isUpdated = false;
 
+    let lastIndex = null;
+    let currentMax = null;
+
+    let attrDeleted = [];
+
+    let isUpdating = null;
+
+    let reOrderParent = false;
+
     jQuery(function ($) {
-        $('.custom-grid-btn.btn-delete').click(function (e) {
-            if (confirm('Do you want to delete row id ' + $(e.target).attr('data-id'))) {
-                toggleImgLoading();
-                $.get($(e.target).attr('data-url')).done(function (e) {
-                    console.log(e);
-                }).always(function () {
-                    toggleImgLoading(false);
-                });
-            }
-        });
-
-        $('.custom-grid-btn.edit').click(function (e) {
-
-        });
-
         $('#u-add-column-form').submit(function (e) {
             e.preventDefault();
             let form = $(e.target).serializeArray();
-            let attributeId = +form[0].value;
-            let attributeLabel = form[1].value;
-            let attributeWidth = +form[2].value;
-            let isExisted = currentAttributeIds.find(function (e) {
-                return +e.attribute_id === attributeId
-            })
-            if (isExisted !== undefined) {
-                return false;
-            }
-            let selectedAttr = listAttribute.find(function (e) {
-                return +e.attribute_id === attributeId
-            });
-            if (selectedAttr) {
-                attributeLabel = attributeLabel === '' ? selectedAttr.frontend_label : attributeLabel;
-                let html = `<tr id="column-1-65" title="" class="">
-                            <td class=" a-right ">NULL</td>
-                            <td class=" ">
-                                ${selectedAttr.attribute_code} </td>
-                            <td class=" ">
-                                <span class="u-show-first-group"> ${attributeLabel}</span>
-                                <input type="text" class="u-hidden-first-group" value="${attributeLabel}"> </td>
-                            <td class=" a-right ">
-                                0 </td>
-                            <td class=" ">
-                                <span class="u-show-first-group">${attributeWidth}px</span>
-                                <input type="text" class="u-hidden-first-group" value="50"> </td>
-                            <td class=" ">
-                                <input type="checkbox" name="" value="14" class="checkbox" checked="checked"> </td>
-                            <td class=" last">
-                                <span class="custom-grid-btn btn-edit" data-id="14" style="background-image: url(http://magento1.local/skin/adminhtml/default/default/images/icon_edit_address.gif);"></span><span class="custom-grid-btn btn-delete" data-id="14" data-url="http://magento1.local/index.php/admin/customgrid_index/delete/id/14/key/b3caccbae748f866a8c04f89a9eb926d/" style="background-image: url(http://magento1.local/skin/adminhtml/default/default/images/icon_btn_delete.gif);"></span> </td>
-                        </tr>`
-                $('#customgrid_grid_table > tbody').append(html);
+            if (isUpdating === null) {
+                let attributeId = +form[0].value;
+                let attributeLabel = form[1].value;
+                let attributeWidth = +form[2].value;
+                let isExisted = currentAttributes.find(function (e) {
+                    return +e.attribute_id === attributeId
+                })
+                if (isExisted !== undefined) {
+                    return false;
+                }
+                let selectedAttr = listAttribute.find(function (e) {
+                    return +e.attribute_id === attributeId
+                });
+                attributeLabel = attributeLabel === '' ? null : attributeLabel;
                 let newColumn = {
                     attribute_id: attributeId,
                     column_id: null,
-                    label: attributeLabel === '' ? '' : attributeLabel,
-                    sort_order: '0',
+                    label: attributeLabel,
+                    sort_order: (++currentMax).toString(),
                     status: '1',
-                    width: '50'
+                    width: attributeWidth,
+                    attribute_code: selectedAttr.attribute_code,
+                    is_add_new: true,
+                    frontend_label: selectedAttr.frontend_label,
                 };
-                currentAttributeIds.push(newColumn);
-                doOrderColumnEven();
+                currentAttributes.push(newColumn);
+                reLoadSelectAttributeCode();
+            } else {
+                currentAttributes.map(e => {
+                    if (e.attribute_code === isUpdating.attribute_code) {
+                        let attributeLabel = form[0].value === '' ? null : form[0].value;
+                        let attributeWidth = +form[1].value;
+                            e.label = attributeLabel;
+                        e.width = attributeWidth;
+                        e.is_updated = true;
+                    }
+                    return e;
+                })
             }
+            activeSaveBtn();
+            customgrid_gridJsObject.renderWithJSON();
         });
 
         $('#u-btn-cancel').click(function () {
@@ -74,25 +66,37 @@
         $('#customgrid_grid_table > tbody').sortable({
             axis: 'y',
             cursor: 'move',
-            update: function (e) {
-                console.log(e)
-                $('#u-btn-save-order').show();
-                doOrderColumnEven();
+            update: function (e, ui) {
                 activeSaveBtn();
+                swap($('#customgrid_grid_table > tbody tr').index(ui.item[0]))
+            },
+            start: function (e, ui) {
+                lastIndex = $('#customgrid_grid_table > tbody tr').index(ui.item[0])
             }
         });
 
 
-    })
+    });
+
+    let swap = function (index) {
+        ++index; ++lastIndex;
+        currentAttributes[lastIndex - 1].sort_order = index.toString();
+        currentAttributes[index - 1].sort_order = lastIndex.toString();
+        customgrid_gridJsObject.renderWithJSON();
+    };
+
+
 
     let reLoadSelectAttributeCode = function () {
         let select = jQuery('#u-select-attribute-code');
         select.html('');
+        jQuery('#u-input-attribute-label').val('');
+        jQuery('#u-input-attribute-width').val('50');
         let options = '';
-        filterAttribute(listAttribute, currentAttributeIds).forEach(e => {
-            options += `<option value="${e.attribute_id}">${Boolean(e.frontend_label) ? e.frontend_label : e.attribute_code}</option>`
+        filterAttribute(listAttribute, currentAttributes).forEach(e => {
+            options += `<option value="${e.attribute_id}">${e.attribute_code}</option>`
         });
-        select.html(options);
+        select.html(options).prop('disabled', false);
     };
 
     let filterAttribute = function (attr, curr) {
@@ -106,7 +110,9 @@
     let showCreateColumn = function () {
         jQuery('.u-form-add-new-column').show();
         jQuery('#u-btn-add-column').hide();
+        jQuery('#btn-btn-add-btn-edit span').text('Add new');
         reLoadSelectAttributeCode();
+        isUpdating = null;
     }
 
     let toggleImgLoading = function (value = true) {
@@ -128,29 +134,8 @@
         }
     };
 
+    activeSaveBtn(false);
 
-    let doOrderColumnEven = function () {
-        let id = null;
-        let newArray = [];
-        jQuery('#customgrid_grid_table tbody tr').each((i, e) => {
-            if (i % 2 === 0) {
-                e.className = 'even ui-sortable-handle';
-            } else {
-                e.className = 'ui-sortable-handle';
-            }
-
-
-            jQuery(jQuery(e).find('td')[3]).text(i + 1);
-            id = +jQuery(e).find('input[name="hidden_attribute_id"]').val();
-            let currentObject = currentAttributeIds.find(function (ee) {
-                return +ee.attribute_id === id
-            })
-            if (currentObject) {
-                newArray.push(currentObject);
-            }
-        })
-        currentAttributeIds = Object.assign([], newArray);
-    };
 
     let closePopup = function () {
         if (isUpdated) {
@@ -160,6 +145,125 @@
         } else {
             parent.postMessage('close_popup', '*')
         }
+        if (reOrderParent)
+            parent.postMessage('re_order', '*')
+    }
+    let btnDeleteRow = function (code) {
+        if (confirm('Do you want to delete row ' + code)) {
+            let id = null;
+            currentAttributes = currentAttributes.filter(function (e) {
+                if (e.attribute_code === code && !('is_add_new' in e)) {
+                    id = +e.column_id;
+                }
+                return e.attribute_code !== code
+            });
+            if (id !== null)
+                attrDeleted.push(id);
+            reOrderJSON();
+            customgrid_gridJsObject.renderWithJSON();
+            activeSaveBtn();
+        }
+    };
+
+    let btnEditRow = function (code) {
+        let existed = currentAttributes.find(function (e) {
+            return e.attribute_code === code;
+        });
+        if (existed) {
+            if (existed.label !== null) {
+                jQuery('#u-input-attribute-label').val(existed.label);
+            } else {
+                jQuery('#u-input-attribute-label').val('');
+            }
+            jQuery('#u-input-attribute-width').val(existed.width);
+            jQuery('#btn-btn-add-btn-edit span').text('Update');
+            jQuery('.u-form-add-new-column').show();
+            jQuery('#u-btn-add-column').hide();
+            isUpdating = existed;
+            let option = `<option>${code}</option>`;
+            jQuery('#u-select-attribute-code').prop('disabled', true).html(option);
+        }
+    };
+
+    let reOrderJSON = function () {
+        currentAttributes = currentAttributes.map(function (e, i) {
+            e.sort_order = (i + 1).toString();
+            return e;
+        })
+    }
+
+    if ('customgrid_gridJsObject' in window) {
+        customgrid_gridJsObject.renderWithJSON = function (data = null) {
+
+            let table = jQuery('#customgrid_grid_table > tbody');
+            table.html('');
+            currentAttributes.sort(function(a, b) {
+                return +a.sort_order - +b.sort_order
+            }).forEach(function (e, i) {
+                let label = e.label === null ? e.frontend_label : e.label + '(*)';
+                let className = i % 2 === 0 ? 'even ui-sortable-handle' : 'ui-sortable-handle';
+                let html = `<tr title="" class="${className}">
+                            <td class="a-right">${e.column_id}</td>
+                            <td class="">
+                                ${e.attribute_code} </td>
+                            <td class="">
+                                <span class="u-show-first-group"> ${label === null ? e.attribute_code + '(**)' : label}</span>
+                                <input type="text" class="u-hidden-first-group" value="${label}"> </td>
+                            <td class="a-right">
+                                ${e.sort_order} </td>
+                            <td class="a-right">
+                                <span class="u-show-first-group">${e.width}px</span>
+                                <input type="text" class="u-hidden-first-group" value="50"> </td>
+                            <td class="a-center">
+                                <input type="checkbox" class="checkbox" ${e.status === '1' ? 'checked' : ''} onchange="toggleCheckboxStatus('${e.attribute_code}', this)"> </td>
+                            <td class="last a-right">
+                                <span class="custom-grid-btn btn-edit" onclick="btnEditRow('${e.attribute_code}')" data-id="14" style="background-image: url(http://magento1.local/skin/adminhtml/default/default/images/icon_edit_address.gif);"></span><span class="custom-grid-btn btn-delete" onclick="btnDeleteRow('${e.attribute_code}')" style="background-image: url(http://magento1.local/skin/adminhtml/default/default/images/icon_btn_delete.gif);"></span> </td>
+                        </tr>`;
+                table.append(html);
+                currentMax = +e.sort_order;
+            })
+        }
+        customgrid_gridJsObject.renderWithJSON();
+    }
+
+    let saveColumns = function (formKey, url) {
+        toggleImgLoading()
+        jQuery.post(url, {
+            form_key: formKey,
+            data: JSON.stringify(currentAttributes),
+            deleted: attrDeleted
+        }).done(function (e) {
+            e = JSON.parse(e);
+            if (e.status === 'success') {
+                alert(e.message)
+                activeSaveBtn(false);
+                reOrderParent = true;
+            }
+        }).fail(function (err) {
+            e = JSON.parse(e);
+            if (err.status === 'error') {
+                alert(e.message);
+            }
+        }).always(function () {
+            toggleImgLoading(false)
+        })
+    }
+
+    let toggleCheckboxStatus = function (code, event) {
+        activeSaveBtn();
+        let status = '0';
+        if (jQuery(event).prop('checked')) {
+            status = '1';
+        }
+
+        currentAttributes = currentAttributes.map(function (e) {
+            if (e.attribute_code === code) {
+                e.status = status;
+                e.is_updated = true;
+            }
+            return e;
+        });
+        customgrid_gridJsObject.renderWithJSON();
     }
 
 </script>

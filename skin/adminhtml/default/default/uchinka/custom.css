@@ -60,3 +60,7 @@
 #u-btn-save-order {
     display: none;
 }
+
+.p-right {
+    padding-right: 15px !important;
+}

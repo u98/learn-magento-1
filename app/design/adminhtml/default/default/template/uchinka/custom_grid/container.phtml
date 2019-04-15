@@ -36,9 +36,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <?php echo $this->getBlockHtml('formkey')?>
-                        <button type="submit" class="scalable add" style=""><span><span><span>Add new</span></span></span></button>
-                        <button id="u-btn-cancel" class="scalable" style=""><span><span><span>Cancel</span></span></span></button>
+                        <button type="submit" class="scalable add" id="btn-btn-add-btn-edit"><span>Add new</span></button>
+                        <a id="u-btn-cancel" class="scalable" style=""><span>Cancel</span></a>
                     </td>
                 </tr>
             </table>
@@ -47,7 +46,7 @@
     <?php echo $this->getGridHtml() ?>
 </div>
 <script>
-    let currentAttributeIds = <?php echo json_encode($this->getChild('grid')->getCurrentAttributeIds()) ?>;
+    let currentAttributes = <?php echo json_encode($this->getCurrentAttributes()) ?>;
 
-    let listAttribute = <?php echo json_encode($this->getAllAttribute()) ?>
+    let listAttribute = <?php echo json_encode($this->getAllAttribute()) ?>;
 </script>

@@ -27,4 +27,9 @@ class Uchinka_CustomGrid_Model_Grid extends Mage_Core_Model_Abstract
         return $this->getAttributeCode();
     }
 
+    public function getSortOrder()
+    {
+        return $this->_getData('sort_order');
+    }
+
 }

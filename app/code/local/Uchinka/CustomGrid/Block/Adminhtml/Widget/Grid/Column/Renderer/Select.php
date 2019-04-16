@@ -4,6 +4,7 @@ class Uchinka_CustomGrid_Block_Adminhtml_Widget_Grid_Column_Renderer_Select exte
 {
     public function render(Varien_Object $row)
     {
+//        var_dump($row->getColor());die();
         $name = $this->getColumn()->getName() ? $this->getColumn()->getName() : $this->getColumn()->getId();
         $html = '<select name="' . $this->escapeHtml($name) . '" ' . $this->getColumn()->getValidateClass() . '>';
         $value = $row->getData($this->getColumn()->getIndex());

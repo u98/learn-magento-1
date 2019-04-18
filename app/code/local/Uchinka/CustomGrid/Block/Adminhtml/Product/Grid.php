@@ -106,6 +106,7 @@ class Uchinka_CustomGrid_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Blo
                     'index' => 'entity_id',
                     'width' => '10px',
                 ));
+            $eav_config = Mage::getModel('eav/config');
             foreach($this->columns as $column) {
                 if ($column['status'] == '0') continue;
                 $columnArr = array(
@@ -116,7 +117,7 @@ class Uchinka_CustomGrid_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Blo
                 );
                 if ($columnArr['type'] === 'select') {
                     $columnArr['type'] = 'options';
-                    $attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', $column['attribute_code']);
+                    $attribute = $eav_config->getAttribute('catalog_product', $column['attribute_code']);
                     $allOptions = $attribute->getSource()->getAllOptions(false, true);
                     $columnArr['options']  = $this->_getSelectOptions($allOptions);
                     //$columnArr['renderer'] =  'customgrid/adminhtml_widget_grid_column_renderer_select';

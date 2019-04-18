@@ -127,6 +127,10 @@ class Uchinka_CustomGrid_Block_Adminhtml_Product_Grid extends Mage_Adminhtml_Blo
                 if ($column['frontend_input'] === 'price') {
                     $store = $this->_getStore();
                     $columnArr['currency_code'] = $store->getBaseCurrency()->getCode();
+                    $columnArr['header_css_class'] = 'f-right';
+                }
+                if ($column['frontend_input'] === 'media_image') {
+                    $columnArr['renderer'] = 'customgrid/adminhtml_widget_grid_column_renderer_image';
                 }
                 $this->addColumn($column['attribute_code'], $columnArr);
             }

@@ -4,7 +4,13 @@ let showColumnsPopup = function (url) {
 }
 
 jQuery(function($) {
-
+    $('.u-tooltip-media').tooltip({
+        items: '[data-url]',
+        content: function () {
+            let url = $(this).attr('data-url');
+            return `<img class="u-img-tooltip" src="${url}"></img>`
+        }
+    })
 });
 
 

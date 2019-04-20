@@ -27,6 +27,8 @@
     <adminhtml_catalog_product_index>
         <reference name="head">
             <action method="addCss"><name>uchinka/custom.css</name></action>
+            <action method="addCss"><name>uchinka/jquery-ui.min.css</name></action>
+            <action method="addJs"><script>uchinka/jquery-ui.min.js</script></action>
             <action method="addJs"><script>uchinka/custom.js</script></action>
         </reference>
 

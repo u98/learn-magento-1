@@ -11,7 +11,7 @@ class Uchinka_CustomGrid_Model_Resource_Grid_Collection extends Mage_Core_Model_
         $this->join(
             array('ea' => 'eav/attribute'),
             'main_table.attribute_id=ea.attribute_id',
-            array('attribute_code', 'frontend_label', 'frontend_input'));
+            array('attribute_code', 'frontend_label', 'frontend_input', 'backend_type', 'source_model'));
 
         return $this;
     }

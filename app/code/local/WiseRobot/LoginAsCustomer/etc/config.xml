@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config>
+    <modules>
+        <WiseRobot_LoginAsCustomer>
+            <version>0.0.1</version>
+        </WiseRobot_LoginAsCustomer>
+    </modules>
+    <global>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <customer_edit>WiseRobot_LoginAsCustomer_Block_Adminhtml_Customer_Edit</customer_edit>
+                    <customer_grid>WiseRobot_LoginAsCustomer_Block_Adminhtml_Customer_Grid</customer_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <WiseRobot_LoginAsCustomer before="Mage_Adminhtml">WiseRobot_LoginAsCustomer_Adminhtml</WiseRobot_LoginAsCustomer>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <frontend>
+        <routers>
+            <loginas>
+                <use>standard</use>
+                <args>
+                    <module>WiseRobot_LoginAsCustomer</module>
+                    <frontName>loginas</frontName>
+                </args>
+            </loginas>
+        </routers>
+    </frontend>
+</config>

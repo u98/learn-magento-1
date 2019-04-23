@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <modules>
+        <WiseRobot_LoginAsCustomer>
+            <active>true</active>
+            <codePool>local</codePool>
+        </WiseRobot_LoginAsCustomer>
+    </modules>
+</config>
